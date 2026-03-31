@@ -7,19 +7,17 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await API.post("/auth/login", {
+      const res = await API.post("/login", {
         email,
         password,
       });
 
-      // ✅ store token
       localStorage.setItem("token", res.data.access_token);
 
-      alert("Login successful ✅");
+      alert("Login successful ");
 
-      // 👉 next: navigate to dashboard
     } catch (err) {
-      alert("Invalid credentials ❌");
+      alert("Invalid credentials ");
     }
   };
 
@@ -52,7 +50,6 @@ function Login() {
 
 export default Login;
 
-// 🎨 simple styling
 const styles = {
   container: {
     display: "flex",
