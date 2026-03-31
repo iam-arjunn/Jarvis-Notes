@@ -1,11 +1,18 @@
 import { useState } from "react";
 import API from "../services/api";
+import "../css/Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
+    setLoading(true);
+    setError("");
+
     try {
       const res = await API.post("/login", {
         email,
@@ -14,69 +21,72 @@ function Login() {
 
       localStorage.setItem("token", res.data.access_token);
 
-      alert("Login successful ");
+      setTimeout(() => {
+        alert("Welcome to J.A.R.V.I.S 🧠");
+        setLoading(false);
+      }, 800);
 
     } catch (err) {
-      alert("Invalid credentials ");
+      setLoading(false);
+      setError("Invalid email or password");
     }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2>Login</h2>
+    <div className="login-container">
+      <div className="login-card">
+
+        <h2 className="login-title">J.A.R.V.I.S</h2>
+
+        {/* ERROR MESSAGE */}
+        {error && <p className="error-text">{error}</p>}
 
         <input
-          style={styles.input}
+          className="login-input"
           type="email"
-          placeholder="Email"
+          placeholder="Enter Email"
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input
-          style={styles.input}
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        {/* PASSWORD FIELD */}
+        <div className="password-wrapper">
+          <input
+            className="login-input"
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button style={styles.button} onClick={handleLogin}>
-          Login
+          <span
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? (
+              // 👁‍🗨 hidden icon
+              <svg width="20" height="20" fill="#00d9ff" viewBox="0 0 24 24">
+                <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+                <line x1="2" y1="2" x2="22" y2="22" stroke="#00d9ff" strokeWidth="2" />
+              </svg>
+            ) : (
+              // 👁 visible icon
+              <svg width="20" height="20" fill="#00d9ff" viewBox="0 0 24 24">
+                <path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+              </svg>
+            )}
+          </span>
+        </div>
+        {/* BUTTON */}
+        <button
+          className="login-button"
+          onClick={handleLogin}
+          disabled={loading}
+        >
+          {loading ? <div className="loader"></div> : "Initialize System"}
         </button>
+
       </div>
     </div>
   );
 }
 
 export default Login;
-
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-    background: "#f5f5f5",
-  },
-  card: {
-    background: "#fff",
-    padding: "30px",
-    borderRadius: "10px",
-    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-    width: "300px",
-    textAlign: "center",
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    margin: "10px 0",
-  },
-  button: {
-    width: "100%",
-    padding: "10px",
-    background: "#4CAF50",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer",
-  },
-};
