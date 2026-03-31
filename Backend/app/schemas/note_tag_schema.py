@@ -1,5 +1,6 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 class NoteTagCreate(BaseModel):
-    note_id: str
-    tag_id: str
+    note_id: UUID
+    tag_id: UUID
