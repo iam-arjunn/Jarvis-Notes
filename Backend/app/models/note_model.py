@@ -9,6 +9,7 @@ class Note(Base):
     __tablename__ = "notes"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True))
     title = Column(Text)
     content = Column(Text)
     subject = Column(Text)
