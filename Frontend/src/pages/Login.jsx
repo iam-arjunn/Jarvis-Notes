@@ -81,7 +81,7 @@ function Login() {
           onClick={handleLogin}
           disabled={loading}
         >
-          {loading ? <div className="loader"></div> : "Initialize System"}
+          {loading ? <div className="jarvis-loader"></div> : "Login"}
         </button>
 
       </div>
